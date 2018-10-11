@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Asciidoctor 1.5.6.1">
+<meta name="generator" content="Asciidoctor 1.5.3">
 <meta name="author" content="Arkane Team">
 <title>Arkane Documentation</title>
 <style>
@@ -1838,6 +1838,8 @@ span.icon > [class^="icon-"], span.icon > [class*=" icon-"] {
 <ul class="sectlevel2">
 <li><a href="#_get_all_user_wallets">Get all user wallets</a></li>
 <li><a href="#_get_a_specific_user_wallet">Get a specific user wallet</a></li>
+<li><a href="#_get_the_balance_for_a_specific_user_wallet">Get the balance for a specific user wallet</a></li>
+<li><a href="#_get_the_balance_of_a_token_for_a_specific_user_wallet">Get the balance of a token for a specific user wallet</a></li>
 </ul>
 </li>
 <li><a href="#_signatures">Signatures</a>
@@ -1874,7 +1876,7 @@ span.icon > [class^="icon-"], span.icon > [class*=" icon-"] {
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/json;charset=UTF-8
-Content-Length: 640
+Content-Length: 684
 
 {
   "success" : true,
@@ -1883,21 +1885,23 @@ Content-Length: 640
     "address" : "0xdc72b72db54e227e65a45004ab2798d31e8934c2",
     "walletType" : "THREEWAY_SHARED",
     "secretType" : "ETHEREUM",
-    "createdAt" : "2018-09-17T17:09:26.654",
+    "createdAt" : "2018-10-11T10:52:56.788",
     "archived" : false,
     "alias" : "alias",
     "description" : "description",
-    "primary" : false
+    "primary" : false,
+    "balance" : null
   }, {
     "id" : 1,
     "address" : "0xdc72b72db54e227e65a45004ab2798d31e8934c2",
     "walletType" : "THREEWAY_SHARED",
     "secretType" : "VECHAIN",
-    "createdAt" : "2018-09-17T17:09:26.654",
+    "createdAt" : "2018-10-11T10:52:56.788",
     "archived" : false,
     "alias" : "alias",
     "description" : "description",
-    "primary" : false
+    "primary" : false,
+    "balance" : null
   } ]
 }</code></pre>
 </div>
@@ -1907,9 +1911,9 @@ Content-Length: 640
 <h4 id="_get_all_user_wallets_response_fields">Response fields</h4>
 <table class="tableblock frame-all grid-all spread">
 <colgroup>
-<col style="width: 33.3333%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3334%;">
+<col style="width: 33%;">
+<col style="width: 33%;">
+<col style="width: 33%;">
 </colgroup>
 <thead>
 <tr>
@@ -1995,7 +1999,7 @@ Content-Length: 640
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/json;charset=UTF-8
-Content-Length: 336
+Content-Length: 532
 
 {
   "success" : true,
@@ -2004,11 +2008,18 @@ Content-Length: 336
     "address" : "0xdc72b72db54e227e65a45004ab2798d31e8934c2",
     "walletType" : "THREEWAY_SHARED",
     "secretType" : "ETHEREUM",
-    "createdAt" : "2018-09-17T17:09:27.463",
+    "createdAt" : "2018-10-11T10:52:56.933",
     "archived" : false,
     "alias" : "alias",
     "description" : "description",
-    "primary" : false
+    "primary" : false,
+    "balance" : {
+      "chainType" : "ETHEREUM",
+      "balance" : 1.0,
+      "gasBalance" : 1.0,
+      "rawBalance" : "1000000000000000000",
+      "rawGasBalance" : "1000000000000000000"
+    }
   }
 }</code></pre>
 </div>
@@ -2018,9 +2029,9 @@ Content-Length: 336
 <h4 id="_get_a_specific_user_wallet_response_fields">Response fields</h4>
 <table class="tableblock frame-all grid-all spread">
 <colgroup>
-<col style="width: 33.3333%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3334%;">
+<col style="width: 33%;">
+<col style="width: 33%;">
+<col style="width: 33%;">
 </colgroup>
 <thead>
 <tr>
@@ -2080,6 +2091,36 @@ Content-Length: 336
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">description of the wallet</p></td>
 </tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>result.balance</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Object</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The native token balance of the wallet</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>result.balance.balance</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Normalized balance of the native coin</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>result.balance.chainType</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Type of the chain</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>result.balance.gasBalance</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Normalized balance of the gas coin, same as balance if the coin for paying gas/fees is the same native coin</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>result.balance.rawBalance</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Raw balance of the native coin</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>result.balance.rawGasBalance</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Rraw balance of the gas coin, same as balance if the coin for paying gas</p></td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -2094,12 +2135,251 @@ Content-Length: 336
     "address" : "0xdc72b72db54e227e65a45004ab2798d31e8934c2",
     "walletType" : "THREEWAY_SHARED",
     "secretType" : "ETHEREUM",
-    "createdAt" : "2018-09-17T17:09:27.463",
+    "createdAt" : "2018-10-11T10:52:56.933",
     "archived" : false,
     "alias" : "alias",
     "description" : "description",
-    "primary" : false
+    "primary" : false,
+    "balance" : {
+      "chainType" : "ETHEREUM",
+      "balance" : 1.0,
+      "gasBalance" : 1.0,
+      "rawBalance" : "1000000000000000000",
+      "rawGasBalance" : "1000000000000000000"
+    }
   }
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+Trying to fetch the details of a wallet without the correct credentials will result in a 404 rather than a 403.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_get_the_balance_for_a_specific_user_wallet">Get the balance for a specific user wallet</h3>
+<div class="sect3">
+<h4 id="_get_the_balance_for_a_specific_user_wallet_curl_request">Example Curl request</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">$ curl 'https://api.thorblock.io/api/wallets/1/balance' -i -X GET</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_get_the_balance_for_a_specific_user_wallet_path_parameters">Path parameters</h4>
+<table class="tableblock frame-all grid-all spread">
+<caption class="title">Table 1. /api/wallets/{id}/balance</caption>
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Parameter</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>id</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">id of the wallet</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_get_the_balance_for_a_specific_user_wallet_http_response">Example response</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
+Content-Type: application/json;charset=UTF-8
+Content-Length: 154
+
+{
+  "chainType" : "ETHEREUM",
+  "balance" : 1.0,
+  "gasBalance" : 1.0,
+  "rawBalance" : "1000000000000000000",
+  "rawGasBalance" : "1000000000000000000"
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_get_the_balance_for_a_specific_user_wallet_response_fields">Response fields</h4>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 33%;">
+<col style="width: 33%;">
+<col style="width: 33%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Path</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>balance</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Normalized balance of the native coin</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>chainType</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Type of the chain</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>gasBalance</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Normalized balance of the gas coin, same as balance if the coin for paying gas/fees is the same native coin</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>rawBalance</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Raw balance of the native coin</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>rawGasBalance</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Rraw balance of the gas coin, same as balance if the coin for paying gas</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_get_the_balance_for_a_specific_user_wallet_response_body">Response body</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code>{
+  "chainType" : "ETHEREUM",
+  "balance" : 1.0,
+  "gasBalance" : 1.0,
+  "rawBalance" : "1000000000000000000",
+  "rawGasBalance" : "1000000000000000000"
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+Trying to fetch the details of a wallet without the correct credentials will result in a 404 rather than a 403.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_get_the_balance_of_a_token_for_a_specific_user_wallet">Get the balance of a token for a specific user wallet</h3>
+<div class="sect3">
+<h4 id="_get_the_balance_of_a_token_for_a_specific_user_wallet_curl_request">Example Curl request</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">$ curl 'https://api.thorblock.io/api/wallets/1/balance/tokens/0x4df47b4969b2911c966506e3592c41389493953b' -i -X GET</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_get_the_balance_of_a_token_for_a_specific_user_wallet_path_parameters">Path parameters</h4>
+<table class="tableblock frame-all grid-all spread">
+<caption class="title">Table 1. /api/wallets/{id}/balance/tokens/{token}</caption>
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Parameter</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>id</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">id of the wallet</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>token</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Token to get the balance for</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_get_the_balance_of_a_token_for_a_specific_user_wallet_http_response">Example response</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
+Content-Type: application/json;charset=UTF-8
+Content-Length: 139
+
+{
+  "tokenAddress" : "0x4df47b4969b2911c966506e3592c41389493953b",
+  "rawBalance" : "10000000283000000000000",
+  "balance" : 10000.000283
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_get_the_balance_of_a_token_for_a_specific_user_wallet_response_fields">Response fields</h4>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 33%;">
+<col style="width: 33%;">
+<col style="width: 33%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Path</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>tokenAddress</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">address of the token</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>rawBalance</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">raw balance of the wallet for the token</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>balance</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Normalized Balance of the wallet for the token</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_get_the_balance_of_a_token_for_a_specific_user_wallet_response_body">Response body</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code>{
+  "tokenAddress" : "0x4df47b4969b2911c966506e3592c41389493953b",
+  "rawBalance" : "10000000283000000000000",
+  "balance" : 10000.000283
 }</code></pre>
 </div>
 </div>
@@ -2168,9 +2448,9 @@ Trying to fetch the details of a wallet without the correct credentials will res
 <h4 id="_sign_an_ethereum_transaction_request_fields">Request fields</h4>
 <table class="tableblock frame-all grid-all spread">
 <colgroup>
-<col style="width: 33.3333%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3334%;">
+<col style="width: 33%;">
+<col style="width: 33%;">
+<col style="width: 33%;">
 </colgroup>
 <thead>
 <tr>
@@ -2250,9 +2530,9 @@ Trying to fetch the details of a wallet without the correct credentials will res
 <h4 id="_sign_an_ethereum_transaction_response_fields">Response fields</h4>
 <table class="tableblock frame-all grid-all spread">
 <colgroup>
-<col style="width: 33.3333%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3334%;">
+<col style="width: 33%;">
+<col style="width: 33%;">
+<col style="width: 33%;">
 </colgroup>
 <thead>
 <tr>
@@ -2270,7 +2550,7 @@ Trying to fetch the details of a wallet without the correct credentials will res
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>result.signedTransaction</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">The signed transaction. If submitted to the network, the transactionhash, if not, the signed transaction</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The signed transaction. If submitted to the network, the transaction hash, if not, the signed transaction</p></td>
 </tr>
 </tbody>
 </table>
@@ -2332,9 +2612,9 @@ Trying to fetch the details of a wallet without the correct credentials will res
 <h4 id="_sign_a_vechain_transaction_request_fields">Request fields</h4>
 <table class="tableblock frame-all grid-all spread">
 <colgroup>
-<col style="width: 33.3333%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3334%;">
+<col style="width: 33%;">
+<col style="width: 33%;">
+<col style="width: 33%;">
 </colgroup>
 <thead>
 <tr>
@@ -2456,9 +2736,9 @@ Trying to fetch the details of a wallet without the correct credentials will res
 <h4 id="_get_your_profile_response_fields">Response fields</h4>
 <table class="tableblock frame-all grid-all spread">
 <colgroup>
-<col style="width: 33.3333%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3334%;">
+<col style="width: 33%;">
+<col style="width: 33%;">
+<col style="width: 33%;">
 </colgroup>
 <thead>
 <tr>
@@ -2507,7 +2787,7 @@ Trying to fetch the details of a wallet without the correct credentials will res
 <div id="footer">
 <div id="footer-text">
 Version 1.0<br>
-Last updated 2018-09-07 11:42:32 CEST
+Last updated 2018-10-11 10:51:58 CEST
 </div>
 </div>
 </body>
